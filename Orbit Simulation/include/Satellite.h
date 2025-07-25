@@ -1,22 +1,28 @@
 #pragma once
 #include "maths/vec3.h"
+#include "maths/vec3d.h"
+
 
 class Satellite
 {
 private:
-	vec3 position;
-	vec3 velocity = vec3(0.0f, 0.0f, 0.0f);
+	vec3d position; // Position in m
+	vec3d velocity; // Velocity in m/s per second
 
-	float mass;
-	float radius;
+	float mass; // Mass in kg
+	float radius; // Radius in m
 
 	vec3 colour;
 
 public:
-	Satellite(vec3 position, float radius, float mass, vec3 colour);
+	bool stationary; // If true the satellite does not move
 
-	vec3 getPosition() const;
-	float getMass() const;
-	float getRadius() const;
+	Satellite(vec3d position, vec3d velocity, double radius, double mass, vec3 colour, bool isStationary = false);
+
+	vec3d getPosition() const;
+	double getMass() const;
+	double getRadius() const;
 	vec3 getColour() const;
+
+	void update(vec3d force, double deltaTime);
 };

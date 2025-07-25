@@ -1,5 +1,9 @@
 #include "rendering/Renderer.h"
 
+#ifndef AU
+#define AU 1.49e+11f // Astronomical Unit in kilometers
+#endif
+
 Renderer::Renderer(GLFWwindow* window, int width, int height)
 	: window(window), vertexBuffer(nullptr, 4 * 2 * sizeof(float)), indexBuffer(satelliteIndices, 2 * 3), shader("res/vertex.glsl", "res/circlefrag.glsl"), center(0.0f, 0.0f, 0.0f), projection()
 {
@@ -39,21 +43,25 @@ void Renderer::draw() const
 	// Bind vertex array
 	vertexArray.bind();
 
-	// Bind index buffer
-	//indexBuffer.bind();
-
+	// Bind the shader
 	shader.bind();
-
-	// Draw the shape
-	GLCALL(glDrawElements(GL_TRIANGLES, indexBuffer.getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
 void Renderer::drawSatellites(std::vector<Satellite>& satellites)
 {
+	// Clear the screen
+	GLCALL(glClear(GL_COLOR_BUFFER_BIT));
+
+	// Bind vertex array
+	vertexArray.bind();
+
+	// Bind the shader
+	shader.bind();
+
 	for (const Satellite& satellite : satellites)
 	{
-		vec3 position = satellite.getPosition();
-		float radius = satellite.getRadius();
+		vec3 position = satellite.getPosition() * (0.7 / AU);
+		float radius = satellite.getRadius() * (0.7 / AU);
 
 		shader.setUniformVec3f("center", position);
 		shader.setUniform1f("radius", radius);

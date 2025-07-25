@@ -17,6 +17,8 @@
 
 #include "Satellite.h"
 
+
+
 class Renderer
 {
 private:
@@ -62,4 +64,5 @@ public:
 
 	void draw() const;
 	void drawSatellites(std::vector<Satellite>& satellites);
+	void drawImgui() const;
 };
